@@ -19,9 +19,10 @@ def main(args):
         malware_samples_intel
     )
 
-    enriched_ioc = threat_analysis.enrich_ioc(consolidated_intel, inputs.ioc)
+    print(consolidated_intel)
+    #enriched_ioc = threat_analysis.enrich_ioc(consolidated_intel, inputs.ioc)
 
-    output_handler.output_enriched_ioc(enriched_ioc, inputs)
+    #output_handler.output_enriched_ioc(enriched_ioc, inputs)
 
 
 if __name__ ==  '__main__':
