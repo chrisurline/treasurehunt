@@ -1,5 +1,6 @@
 ign-*
 .vscode
+config
 config.ini
 .DS_Store
 
