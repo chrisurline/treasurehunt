@@ -20,7 +20,7 @@ __With this information the analyst could:__
 - All file based searches will be designed to query publicly available information based the file hash. 
     - No functionality will be added for uploading files to eliminate the possibilty of accidental data exposure by an analyst. 
 - The tool is intended to provide additional context related to known bad IOCs discovered during investigations. 
-    - **Beware:** Some file sharing services link directly to documents - blindly querying URLs may lead to these documents being publicly available. Use caution when utilizing the URL search functionality. 
+    - __**Beware:**__ Some file sharing services link directly to documents - blindly querying URLs may lead to these documents being publicly available. Use caution when utilizing the URL search functionality. 
 - I will do my best to ensure links/IPs in the output are sanitized/fanged, but always exercise caution while reviewing the results.
 
 ### Short Term Goals
