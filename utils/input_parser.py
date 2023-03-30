@@ -23,10 +23,14 @@ ioc_regex = {
     'sha512': SHA512_REGEX
 }
 
+''' open configuration file '''
 def read_config(config_file_path):
     config = configparser.ConfigParser()
     config.read(config_file_path)
     return config
+
+def parse_configured_apis(apis):
+    pass
 
 def detect_ioc_type(ioc: str) -> str:
     for ioc_type, regex in ioc_regex.items():

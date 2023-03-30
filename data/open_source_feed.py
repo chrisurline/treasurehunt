@@ -101,25 +101,17 @@ class AbuseIPDB:
 
 def collect_data(inputs):
 
-    # initialize threat intel classes
-    vt = VirusTotal(inputs['config']['API_KEYS']['virustotal_api_key'])
-    otx = AlientVaultOTX(inputs['config']['API_KEYS']['alienvault_otx_api_key'])
-    md =  MetaDefender(inputs['config']['API_KEYS']['metadefender_api_key'])
-    aipdb = AbuseIPDB(inputs['config']['API_KEYS']['abuseipdb_api_key'])
+    data_sources = [
+        VirusTotal(inputs['config']['OPEN_SOURCE']['virustotal_api_key']),
+        AlientVaultOTX(inputs['config']['OPEN_SOURCE']['alienvault_otx_api_key']),
+        MetaDefender(inputs['config']['OPEN_SOURCE']['metadefender_api_key']),
+        AbuseIPDB(inputs['config']['OPEN_SOURCE']['abuseipdb_api_key'])
+    ]
 
-
-    # run the IOC queries against the configured sources
-    vt_ioc_data = vt.get_ioc_data(inputs['ioc'], inputs['ioc_type'])
-    otx_ioc_data =  otx.get_ioc_data(inputs['ioc'], inputs['ioc_type'])
-    md_ioc_data = md.get_ioc_data(inputs['ioc'], inputs['ioc_type'])
-    aipdb_ioc_data = aipdb.get_ioc_data(inputs['ioc'], inputs['ioc_type'])
-
-    # consolidate intel
-    open_source_intel = {
-        "virustotal": vt_ioc_data,
-        "alientvault_otx": otx_ioc_data,
-        "metadefender": md_ioc_data,
-        "abuseipdb": aipdb_ioc_data
-    }
+    open_source_intel = {}
+    for source in data_sources:
+        ioc_data = source.get_ioc_data(inputs['ioc'], inputs['ioc_type'])
+        source_name = type(source).__name__.lower()
+        open_source_intel[source_name] = ioc_data
 
     return open_source_intel
