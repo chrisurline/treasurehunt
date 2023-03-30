@@ -3,6 +3,9 @@ from data import open_source_feed, social_media, dark_web, malware_sample
 from analysis import threat_analysis
 from utils import input_parser, output_handler
 
+# temporarily import json 
+import json
+
 def main(args):
     
     inputs = input_parser.parse_arguments(args)
@@ -19,7 +22,10 @@ def main(args):
         malware_samples_intel
     )
 
-    print(consolidated_intel)
+    #print(consolidated_intel)
+    with open('output.json', 'w') as f:
+        json.dump(consolidated_intel, f)
+
     #enriched_ioc = threat_analysis.enrich_ioc(consolidated_intel, inputs.ioc)
 
     #output_handler.output_enriched_ioc(enriched_ioc, inputs)

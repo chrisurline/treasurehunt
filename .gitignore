@@ -1,7 +1,3 @@
-ign-*
-.vscode
-.DS_Store
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -131,5 +127,11 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Custom
 config/config.ini
 config/config.ini
+ign-*
+.vscode
+.DS_Store
+output.json

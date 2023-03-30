@@ -22,7 +22,6 @@ class VirusTotal:
                 ioc_type = 'hashes'
 
         url = f'{self.base_url}{ioc_type}/{ioc}'
-        print(url)
         headers = {
             "accept": "application/json",
             "x-apikey": self.api_key
@@ -90,15 +89,33 @@ class AbuseIPDB:
 
     def get_ioc_data(self, ioc, ioc_type):
         if ioc_type ==  'ipv4' or 'ipv6':
-            url = f'{self.base_url}/{ioc}'
+            params = {
+                'ipAddress': ioc,
+            }
             headers = {
                 'Accept': 'application/json',
                 'Key': self.api_key
             }
-            response = requests.get(url, headers=headers)
+            response = requests.get(self.base_url, headers=headers, params=params)
             return response.text
         else:
-            return 'AbuseIPDB only accepts IP queries'
+            pass
+
+class ShodanIO:
+    def __init__(self, api_key):
+        self.api_key = api_key
+        self.base_url = 'https://api.shodan.io/shodan/host/search'
+
+    def get_ioc_data(self, ioc, ioc_type):
+        if ioc_type ==  'ipv4' or 'ipv6':
+            params = {
+                'key': self.api_key,
+                'query': ioc
+            }
+            response = requests.get(self.base_url, params=params)
+            return response.text
+        else:
+            pass
 
 def collect_data(inputs):
 
@@ -106,7 +123,8 @@ def collect_data(inputs):
         VirusTotal(inputs['config']['API_KEYS']['virustotal_api_key']),
         AlientVaultOTX(inputs['config']['API_KEYS']['alienvault_otx_api_key']),
         MetaDefender(inputs['config']['API_KEYS']['metadefender_api_key']),
-        AbuseIPDB(inputs['config']['API_KEYS']['abuseipdb_api_key'])
+        AbuseIPDB(inputs['config']['API_KEYS']['abuseipdb_api_key']),
+        ShodanIO(inputs['config']['API_KEYS']['shodan_api_key'])
     ]
 
     open_source_intel = {}
