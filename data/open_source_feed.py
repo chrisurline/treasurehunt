@@ -10,18 +10,19 @@ class VirusTotal:
 
     def get_ioc_data(self, ioc, ioc_type):
         match ioc_type:
-            case 'ipv4' | 'ipv6':
+            case ('ipv4' | 'ipv6'):
                 ioc_type = 'ip_addresses'
+            case ('domain' | 'email'):
+                if ioc_type == 'email':
+                    ioc = input_parser.parse_email_to_domain(ioc)
+                ioc_type = 'domains'
             case 'url':
                 ioc_type = 'urls'
-            case 'domain' | 'email':
-                if ioc_type == 'email':
-                    ioc = input_parser.parse_email_domain(ioc)
-                ioc_type = 'domains'
-            case 'md5' | 'sha1' | 'sha256':
+            case ('md5' | 'sha1' | 'sha256'):
                 ioc_type = 'hashes'
 
-        url = f'{self.base_url}{ioc_type}{ioc}'
+        url = f'{self.base_url}{ioc_type}/{ioc}'
+        print(url)
         headers = {
             "accept": "application/json",
             "x-apikey": self.api_key
@@ -66,12 +67,12 @@ class MetaDefender:
         match ioc_type:
             case 'ipv4' | 'ipv6':
                 ioc_type = 'ip'
-            case 'url':
-                pass
             case 'domain' | 'email':
                 if ioc_type == 'email':
-                    ioc = input_parser.parse_email_domain(ioc)
+                    ioc = input_parser.parse_email_to_domain(ioc)
                 ioc_type = 'domain'
+            case 'url':
+                pass
             case 'md5' | 'sha1' | 'sha256':
                 ioc_type = 'hash'
 
@@ -102,10 +103,10 @@ class AbuseIPDB:
 def collect_data(inputs):
 
     data_sources = [
-        VirusTotal(inputs['config']['OPEN_SOURCE']['virustotal_api_key']),
-        AlientVaultOTX(inputs['config']['OPEN_SOURCE']['alienvault_otx_api_key']),
-        MetaDefender(inputs['config']['OPEN_SOURCE']['metadefender_api_key']),
-        AbuseIPDB(inputs['config']['OPEN_SOURCE']['abuseipdb_api_key'])
+        VirusTotal(inputs['config']['API_KEYS']['virustotal_api_key']),
+        AlientVaultOTX(inputs['config']['API_KEYS']['alienvault_otx_api_key']),
+        MetaDefender(inputs['config']['API_KEYS']['metadefender_api_key']),
+        AbuseIPDB(inputs['config']['API_KEYS']['abuseipdb_api_key'])
     ]
 
     open_source_intel = {}

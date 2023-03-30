@@ -1,8 +1,8 @@
 import configparser
 import re
 
-URL_REGEX = r'(?:http(?:s?)://)?(?:[\w]+\.)+[a-zA-Z]+(?::\d{1,5})?'
 DOMAIN_REGEX = r'^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/\n]+)'
+URL_REGEX = r'(?:http(?:s?)://)?(?:[\w]+\.)+[a-zA-Z]+(?::\d{1,5})?'
 EMAIL_REGEX = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
 IPV4_REGEX = r'^(?:(?:25[0-5]|2[0-4]\d|1?\d?\d)(?:\.(?!$)|$)){4}$'
 IPV6_REGEX = r'([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}'
@@ -14,8 +14,8 @@ SHA512_REGEX  = r'\b([a-fA-F\d]{128})\b'
 ioc_regex = {
     'ipv4': IPV4_REGEX,
     'ipv6': IPV6_REGEX,
-    'url': URL_REGEX,
     'domain': DOMAIN_REGEX,
+    'url': URL_REGEX,
     'email': EMAIL_REGEX,
     'md5': MD5_REGEX,
     'sha1': SHA1_REGEX,
@@ -38,7 +38,7 @@ def detect_ioc_type(ioc: str) -> str:
             return ioc_type
     return 'unknown'
 
-def parse_email_domain(email):
+def parse_email_to_domain(email):
     domain = re.search(DOMAIN_REGEX, email)
     return domain
 
