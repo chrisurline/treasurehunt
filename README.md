@@ -25,8 +25,9 @@ __With this information the analyst could:__
 
 ### Short Term Goals
 
-- Complete a CLI based tool that can be used as a standalone tool, integrated into a SOAR platform, or be leveraged as part of a larger project. 
-- Find a way to effectively take the massive amount of data that may be ingested by one of these searches and output it in a way that is consistently useful. (Easier said than done)
+- Complete a CLI based tool that can be used as a standalone resources, integrated into a SOAR platform, or be used as part of a larger project. 
+- Determine a way to coalesce data from a wide variety of data sources and output the data in a way that is consistent, easy to read/understand, and is useful to t he analyst. 
+    - Group new IOCs retrieved during the by type and output them in a format that easily be used in threat hunting queries 
 - Provide at least a couple different options for the format of the results (CSV, JSON, HTML, PDF, etc.)
 - Make at least one person's job a little bit easier. 
 
