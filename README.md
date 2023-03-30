@@ -12,12 +12,12 @@ __With this information the analyst could:__
 - Compile a list of related IOCs for Threat Hunting purposes or for improving the configuration of security tools (Firewalls, IPS/IDS, DLP, etc).
 - Identify potential threat actors and gather information about their TTPs
 - Improve their use cases and the logic used to generate security events
-- Identify patterns of behavior that can be used to educate their team and end users
+- Identify patterns of behavior that can be used to keep their team and end users informed
 - Gather information about the attack and be better equipped to ensure the attack did not move further down the kill chain unnoticed
 
 ### Basic Rules
 
-- All file based searches will be designed to query publicly available information based the file hash. 
+- All file based searches will be designed to query publicly available information based on a provided file hash. 
     - No functionality will be added for uploading files to eliminate the possibilty of accidental data exposure by an analyst. 
 - The tool is intended to provide additional context related to known bad IOCs discovered during investigations. 
     - __**Beware:**__ Some file sharing services link directly to documents - blindly querying URLs may lead to these documents being publicly available. Use caution when utilizing the URL search functionality. 

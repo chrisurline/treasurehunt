@@ -1,4 +1,5 @@
 import requests
+from utils import input_parser
 from OTXv2 import OTXv2
 from OTXv2 import IndicatorTypes
 
@@ -13,7 +14,9 @@ class VirusTotal:
                 ioc_type = 'ip_addresses'
             case 'url':
                 ioc_type = 'urls'
-            case 'domain':
+            case 'domain' | 'email':
+                if ioc_type == 'email':
+                    ioc = input_parser.parse_email_domain(ioc)
                 ioc_type = 'domains'
             case 'md5' | 'sha1' | 'sha256':
                 ioc_type = 'hashes'
@@ -41,6 +44,8 @@ class  AlientVaultOTX:
                 query = otx.get_indicator_details_full(IndicatorTypes.URL, ioc)
             case 'domain':
                 query = otx.get_indicator_details_full(IndicatorTypes.DOMAIN, ioc)
+            case 'email':
+                query = otx.get_indicator_details_full(IndicatorTypes.EMAIL, ioc)
             case 'md5':
                 query = otx.get_indicator_details_full(IndicatorTypes.FILE_HASH_MD5, ioc)
             case 'sha1':
