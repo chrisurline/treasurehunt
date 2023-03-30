@@ -57,21 +57,69 @@ class  AlientVaultOTX:
         
         return query
 
+class MetaDefender:
+    def __init__(self, api_key):
+        self.api_key = api_key
+        self.base_url = 'https://api.metadefender.com/v4/'
+    
+    def get_ioc_data(self, ioc, ioc_type):
+        match ioc_type:
+            case 'ipv4' | 'ipv6':
+                ioc_type = 'ip'
+            case 'url':
+                pass
+            case 'domain' | 'email':
+                if ioc_type == 'email':
+                    ioc = input_parser.parse_email_domain(ioc)
+                ioc_type = 'domain'
+            case 'md5' | 'sha1' | 'sha256':
+                ioc_type = 'hash'
+
+        url = f'{self.base_url}{ioc_type}/{ioc}'
+        headers = {
+            'apikey': self.api_key
+        }
+        response = requests.get(url,  headers=headers)
+        return response.text
+    
+class AbuseIPDB:
+    def __init__(self, api_key):
+        self.api_key = api_key
+        self.base_url = 'https://api.abuseipdb.com/api/v2/check/'
+
+    def get_ioc_data(self, ioc, ioc_type):
+        if ioc_type ==  'ipv4' or 'ipv6':
+            url = f'{self.base_url}/{ioc}'
+            headers = {
+                'Accept': 'application/json',
+                'Key': self.api_key
+            }
+            response = requests.get(url, headers=headers)
+            return response.text
+        else:
+            return 'AbuseIPDB only accepts IP queries'
 
 def collect_data(inputs):
 
     # initialize threat intel classes
     vt = VirusTotal(inputs['config']['API_KEYS']['virustotal_api_key'])
     otx = AlientVaultOTX(inputs['config']['API_KEYS']['alienvault_otx_api_key'])
+    md =  MetaDefender(inputs['config']['API_KEYS']['metadefender_api_key'])
+    aipdb = AbuseIPDB(inputs['config']['API_KEYS']['abuseipdb_api_key'])
 
 
-    # run the IOC query
+    # run the IOC queries against the configured sources
     vt_ioc_data = vt.get_ioc_data(inputs['ioc'], inputs['ioc_type'])
     otx_ioc_data =  otx.get_ioc_data(inputs['ioc'], inputs['ioc_type'])
+    md_ioc_data = md.get_ioc_data(inputs['ioc'], inputs['ioc_type'])
+    aipdb_ioc_data = aipdb.get_ioc_data(inputs['ioc'], inputs['ioc_type'])
 
+    # consolidate intel
     open_source_intel = {
         "virustotal": vt_ioc_data,
-        "alientvault_otx": otx_ioc_data
+        "alientvault_otx": otx_ioc_data,
+        "metadefender": md_ioc_data,
+        "abuseipdb": aipdb_ioc_data
     }
 
     return open_source_intel
