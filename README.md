@@ -36,3 +36,9 @@ __With this information the analyst could:__
 - Implement functionality to compile the results in a centralized location/database (within the confines of the org) so it can be used to identify patterns for threat hunting, and provide performance metrics for the SecOps teams. 
 - Create a web-based dashboard that will display metrics and provide a GUI for submitting queries.
 - Have at least one "pew pew" visual tool that big wigs will enjoy when they stop into a SOC for a visit. (See: https://threatmap.checkpoint.com/)
+
+### Credits:
+
+- Some snippets of code and methods for URLHaus queries were taken from:
+    - Author: [ThreatHive](https://github.com/threathive)
+    - [URLHaus API Client](https://github.com/threathive/urlhaus)   

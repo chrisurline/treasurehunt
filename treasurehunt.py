@@ -8,7 +8,7 @@ import json
 
 def main(args):
     
-    inputs = input_parser.parse_arguments(args)
+    inputs = input_parser.parse_arguments(args) 
 
     open_source_intel = open_source_feed.collect_data(inputs)
     social_media_intel = social_media.collect_data(inputs)
