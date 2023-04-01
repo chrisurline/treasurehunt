@@ -10,17 +10,15 @@ IPV6_REGEX = r'([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}'
 MD5_REGEX = r'\b([a-fA-F\d]{32})\b'
 SHA1_REGEX = r'\b([a-fA-F\d]{40})\b'
 SHA256_REGEX = r'\b([a-fA-F\d]{64})\b'
-SHA512_REGEX  = r'\b([a-fA-F\d]{128})\b'
 
 ioc_regex = {
-    'ipv4': IPV4_REGEX,
-    'ipv6': IPV6_REGEX,
-    'url': URL_REGEX,
-    'email': EMAIL_REGEX,
     'md5': MD5_REGEX,
     'sha1': SHA1_REGEX,
     'sha256': SHA256_REGEX,
-    'sha512': SHA512_REGEX
+    'ipv4': IPV4_REGEX,
+    'ipv6': IPV6_REGEX,
+    'email': EMAIL_REGEX,
+    'url': URL_REGEX
 }
 
 ''' open configuration file '''
@@ -28,9 +26,6 @@ def read_config(config_file_path):
     config = configparser.ConfigParser()
     config.read(config_file_path)
     return config
-
-def parse_configured_apis(apis):
-    pass
 
 def detect_ioc_type(ioc: str) -> str:
     for ioc_type, regex in ioc_regex.items():
@@ -57,7 +52,9 @@ def detect_ioc_type(ioc: str) -> str:
 
 def parse_email_to_domain(email):
     domain = re.search(EMAIL_DOMAIN_REGEX, email)
-    return domain
+    if domain:
+        return domain[1]
+    return None
 
 def parse_arguments(args):
     inputs = {

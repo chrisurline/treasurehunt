@@ -21,7 +21,7 @@ class VirusTotal:
             case 'url':
                 ioc_type = 'urls'
             case ('md5' | 'sha1' | 'sha256'):
-                ioc_type = 'hashes'
+                ioc_type = 'files'
 
         url = f'{self.base_url}{ioc_type}/{ioc}'
         headers = {
@@ -31,7 +31,7 @@ class VirusTotal:
         response = requests.get(url, headers=headers)
         return response.text
 
-class  AlientVaultOTX:
+class AlientVaultOTX:
     def __init__(self, api_key):
         self.api_key = api_key
 
@@ -50,6 +50,10 @@ class  AlientVaultOTX:
                     query = otx.get_indicator_details_full(IndicatorTypes.DOMAIN, ioc)
                 case 'email':
                     query = otx.get_indicator_details_full(IndicatorTypes.EMAIL, ioc)
+                    if not bool(query):
+                        # If no results from email search run against the emails domain
+                        ioc = input_parser.parse_email_to_domain(ioc)
+                        query = otx.get_indicator_details_full(IndicatorTypes.DOMAIN, ioc)
                 case 'md5':
                     query = otx.get_indicator_details_full(IndicatorTypes.FILE_HASH_MD5, ioc)
                 case 'sha1':
@@ -128,16 +132,23 @@ class URLHaus:
         self.base_url = 'https://urlhaus-api.abuse.ch/v1'
 
     def get_ioc_data(self, ioc, ioc_type):
-        match ioc_type:
-            case ('domain' | 'ipv4' | 'ipv6'): 
-                ioc_type = 'host' 
-        
-        url = f'{self.base_url}/{ioc_type}/'
-        data = {
-            ioc_type: ioc
-        }
-        response = requests.post(url, data)
-        return response.text
+        if ioc_type in ['domain', 'ipv4', 'ipv6', 'url', 'email']:
+            match ioc_type:
+                case ('domain' | 'ipv4' | 'ipv6'): 
+                    ioc_type = 'host' 
+                case 'email':
+                    ioc_type = 'host'
+                    ioc = input_parser.parse_email_to_domain(ioc)
+            
+            url = f'{self.base_url}/{ioc_type}/'
+            data = {
+                ioc_type: ioc
+            }
+            print(f'ioc_type is {ioc_type} and ioc is {ioc}')
+            response = requests.post(url, data)
+            return response.text
+        else:
+            pass
 
 class CensysIO:
     def __init__(self):
@@ -149,7 +160,6 @@ class CensysIO:
             return response
         else:
             pass
-
 
 def collect_data(inputs):
 

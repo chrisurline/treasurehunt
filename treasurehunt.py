@@ -1,10 +1,9 @@
 import argparse
+import json
 from data import open_source_feed, social_media, dark_web, malware_sample
 from analysis import threat_analysis
 from utils import input_parser, output_handler
 
-# temporarily import json 
-import json
 
 def main(args):
     

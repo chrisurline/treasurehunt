@@ -21,3 +21,4 @@ Ongoing notes to journal changes and any other relevant information made during 
 - Some IF statements were evaluating incorrectly.. 
 - Had issues with regex evaluating URL vs Domain in `detect_ioc_type` (Some TI sources need explicit distinction between the two)
     - Changed it from using exclusively regex to a combination of urllib parse and regex. Seems to be working so far. 
+- Did a quick (not comprehensive) test on all IOC types and everything seems to be working fine at the moment with the exception of OTX for domains. Seems like its just  timing out but might warrant a closer look. 
