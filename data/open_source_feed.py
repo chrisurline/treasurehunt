@@ -29,7 +29,7 @@ class VirusTotal:
             "x-apikey": self.api_key
         }
         response = requests.get(url, headers=headers)
-        return response.text
+        return json.loads(response.text)
 
 class AlientVaultOTX:
     def __init__(self, api_key):
@@ -88,7 +88,8 @@ class MetaDefender:
             'apikey': self.api_key
         }
         response = requests.get(url,  headers=headers)
-        return response.text
+        return json.loads(response.text)
+    
     
 class AbuseIPDB:
     def __init__(self, api_key):
@@ -97,7 +98,6 @@ class AbuseIPDB:
 
     def get_ioc_data(self, ioc, ioc_type):
         if ioc_type in ['ipv4', 'ipv6']:
-            print(ioc_type)
             params = {
                 'ipAddress': ioc,
             }
@@ -144,9 +144,8 @@ class URLHaus:
             data = {
                 ioc_type: ioc
             }
-            print(f'ioc_type is {ioc_type} and ioc is {ioc}')
             response = requests.post(url, data)
-            return response.text
+            return json.loads(response.text)
         else:
             pass
 
@@ -169,8 +168,8 @@ def collect_data(inputs):
         MetaDefender(inputs['config']['API_KEYS']['metadefender_api_key']),
         AbuseIPDB(inputs['config']['API_KEYS']['abuseipdb_api_key']),
         ShodanIO(inputs['config']['API_KEYS']['shodan_api_key']),
-        CensysIO(),
-        URLHaus()
+        URLHaus(),
+        CensysIO()
     ]
 
     open_source_intel = {}

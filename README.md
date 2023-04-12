@@ -39,6 +39,6 @@ __With this information the analyst could:__
 
 ### Credits:
 
-- Some snippets of code and methods for URLHaus queries were taken from:
+- Some snippets and methods for URLHaus queries were taken from:
     - Author: [ThreatHive](https://github.com/threathive)
     - [URLHaus API Client](https://github.com/threathive/urlhaus)   
